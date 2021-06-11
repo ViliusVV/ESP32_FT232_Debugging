@@ -20,7 +20,7 @@
 // AD3  ->  14 
 // GND  ->   GND
 
-// LEDS of GeekWorm ESP32 DevKit
+// LEDS of GbdeekWorm ESP32 DevKit
 #define LED_BUILTIN 27
 
 
@@ -74,6 +74,7 @@ void TaskBlink(void *pvParameters)
     vTaskDelay(100); 
     digitalWrite(LED_BUILTIN, LOW);    
     vTaskDelay(100);  
+  }
 }
 
 void TaskAnalogReadA3(void *pvParameters) 
@@ -82,7 +83,9 @@ void TaskAnalogReadA3(void *pvParameters)
   
   for (;;)
   {
+
     int sensorValueA3 = analogRead(A3);
+
     Serial.println(sensorValueA3);
     vTaskDelay(10);  
   }
