@@ -20,7 +20,7 @@
 // AD3  ->  14 
 // GND  ->   GND
 
-// LEDS of GbdeekWorm ESP32 DevKit
+// LEDS of GeekWorm ESP32 DevKit
 #define LED_BUILTIN 27
 
 
