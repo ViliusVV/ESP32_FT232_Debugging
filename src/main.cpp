@@ -1,10 +1,8 @@
 #include <Arduino.h>
 
 
-// LEDS of GeekWorm ESP32 DevKit
+// LEDs of GeekWorm ESP32 DevKit
 #define LED_BUILTIN 27
-
-#define ARDUINO_RUNNING_CORE 1
 
 
 
@@ -20,41 +18,50 @@
 // AD3  ->  14 
 // GND  ->   GND
 
-// LEDS of GeekWorm ESP32 DevKit
+// LEDS of GeekWorm ESP32
+#define SERIAL_BAUDRATE 119200
 #define LED_BUILTIN 27
 
 
 
-void TaskBlink( void *pvParameters );
-void TaskAnalogReadA3( void *pvParameters );
+void xTaskBlink( void *pvParameters );
+void xTaskAnalogReadA3( void *pvParameters );
 
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "OCUnusedGlobalDeclarationInspection"
 void setup() {
   
-  Serial.begin(119200);
+  Serial.begin(SERIAL_BAUDRATE);
   
   xTaskCreatePinnedToCore(
-    TaskBlink
-    ,  "TaskBlink"   
+    xTaskBlink
+    ,  "xTaskBlink"
     ,  1024  
-    ,  NULL
+    , nullptr
     ,  2
-    ,  NULL 
+    ,  nullptr
     ,  ARDUINO_RUNNING_CORE);
 
   xTaskCreatePinnedToCore(
-    TaskAnalogReadA3
-    ,  "AnalogReadA3"
+    xTaskAnalogReadA3
+    ,  "xAnalogReadA3"
     ,  1024  
-    ,  NULL
+    ,  nullptr
     ,  1  
-    ,  NULL 
+    ,  nullptr
     ,  ARDUINO_RUNNING_CORE);
 }
+#pragma clang diagnostic pop
 
+
+
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "OCUnusedGlobalDeclarationInspection"
 void loop()
 {
   // Empty.
 }
+#pragma clang diagnostic pop
 
 
 
@@ -62,7 +69,7 @@ void loop()
 /*---------------------- Tasks ---------------------*/
 /*--------------------------------------------------*/
 
-void TaskBlink(void *pvParameters) 
+void xTaskBlink(void *pvParameters)
 {
   (void) pvParameters;
 
@@ -70,14 +77,19 @@ void TaskBlink(void *pvParameters)
 
   for (;;) 
   {
-    digitalWrite(LED_BUILTIN, HIGH);   
+    digitalWrite(LED_BUILTIN, LOW);
     vTaskDelay(100); 
-    digitalWrite(LED_BUILTIN, LOW);    
-    vTaskDelay(100);  
+    digitalWrite(LED_BUILTIN, HIGH);
+    vTaskDelay(100);
+
+    digitalWrite(LED_BUILTIN, LOW);
+    vTaskDelay(10);
+    digitalWrite(LED_BUILTIN, HIGH);
+    vTaskDelay(500);
   }
 }
 
-void TaskAnalogReadA3(void *pvParameters) 
+void xTaskAnalogReadA3(void *pvParameters)
 {
   (void) pvParameters;
   
